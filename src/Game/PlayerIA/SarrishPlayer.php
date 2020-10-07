@@ -49,13 +49,13 @@ class SarrishPlayer extends Player
                 if ($this->result->getLastScoreFor($this->opponentSide) == parent::paperChoice()) {
                     return parent::scissorsChoice();
                 } else {
-                    if($this->result->getLastScoreFor($this->opponentSide) == parent::scissorsChoice()){
+                    if ($this->result->getLastScoreFor($this->opponentSide) == parent::scissorsChoice()) {
                         return parent::rockChoice();
-                } else {
-                    if ($this->result->getLastScoreFor($this->opponentSide) == parent::rockChoice()){
-                        return parent::paperChoice();
+                    } else {
+                        if ($this->result->getLastScoreFor($this->opponentSide) == parent::rockChoice()) {
+                            return parent::paperChoice();
+                        }
                     }
-                }
                 }
             } else {
                 $stat = $this->result->getChoicesFor($this->opponentSide);
@@ -64,16 +64,16 @@ class SarrishPlayer extends Player
                 $rock = 0;
                 $scissors = 0;
                 foreach ($stat as &$value) {
-                    if ($value == parent::rockChoice()){
+                    if ($value == parent::rockChoice()) {
                         $rock += 1;
-                    } 
-                    if ($value == parent::paperChoice()){
+                    }
+                    if ($value == parent::paperChoice()) {
                         $paper += 1;
                     }
-                    if ($value == parent::scissorsChoice()){
+                    if ($value == parent::scissorsChoice()) {
                         $scissors += 1;
                     }
-                 }
+                }
                 if ($paper > $rock + $scissors) {
                     return parent::scissorsChoice();
                 }
@@ -85,32 +85,36 @@ class SarrishPlayer extends Player
                 }
                 $round = $this->result->getNbRound();
 
-                if ($round > 4 ) {
-                    if ($stat[$round - 1 ] == $myStat[$round - 2] && $stat[$round - 2 ] == $myStat[$round - 3] && $stat[$round - 3 ] == $myStat[$round - 4]) {
-                        $lastChoice = $this->result->getLastChoiceFor($this->mySide);
-                        if ($lastChoice == parent::paperChoice()){
-                            return parent::scissorsChoice();
-                        }
-                        if ($lastChoice == parent::scissorsChoice()){
-                            return parent::rockChoice();
-                        }
-                        if ($lastChoice == parent::rockChoice()){
-                            return parent::paperChoice();
+                for ($i = 1; $i <= 10; $i++) {
+                    if ($round > 4 + $i) {
+                        if ($stat[$round - 1] == $myStat[$round - (1 + $i)] && $stat[$round - 2] == $myStat[$round - (2 + $i)] && $stat[$round - 3] == $myStat[$round - (3 + $i)]) {
+                            $lastChoice = $this->result->getLastChoiceFor($this->mySide);
+                            if ($lastChoice == parent::paperChoice()) {
+                                return parent::scissorsChoice();
+                            }
+                            if ($lastChoice == parent::scissorsChoice()) {
+                                return parent::rockChoice();
+                            }
+                            if ($lastChoice == parent::rockChoice()) {
+                                return parent::paperChoice();
+                            }
                         }
                     }
                 }
 
 
 
+
+
                 /* LAST CHOICE ONLY FOR END */
                 $lastChoice = $this->result->getLastChoiceFor($this->opponentSide);
-                if ($lastChoice == parent::paperChoice()){
+                if ($lastChoice == parent::paperChoice()) {
                     return parent::scissorsChoice();
                 }
-                if ($lastChoice == parent::scissorsChoice()){
+                if ($lastChoice == parent::scissorsChoice()) {
                     return parent::rockChoice();
                 }
-                if ($lastChoice == parent::rockChoice()){
+                if ($lastChoice == parent::rockChoice()) {
                     return parent::paperChoice();
                 }
             }
