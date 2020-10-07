@@ -59,6 +59,7 @@ class SarrishPlayer extends Player
                 }
             } else {
                 $stat = $this->result->getChoicesFor($this->opponentSide);
+                $myStat = $this->result->getChoicesFor($this->mySide);
                 $paper = 0;
                 $rock = 0;
                 $scissors = 0;
@@ -82,7 +83,22 @@ class SarrishPlayer extends Player
                 if ($rock > $paper + $scissors) {
                     return parent::paperChoice();
                 }
+                $round = $this->result->getNbRound();
 
+                if ($round > 4 ) {
+                    if ($stat[$round - 1 ] == $myStat[$round - 2] && $stat[$round - 2 ] == $myStat[$round - 3] && $stat[$round - 3 ] == $myStat[$round - 4]) {
+                        $lastChoice = $this->result->getLastChoiceFor($this->mySide);
+                        if ($lastChoice == parent::paperChoice()){
+                            return parent::scissorsChoice();
+                        }
+                        if ($lastChoice == parent::scissorsChoice()){
+                            return parent::rockChoice();
+                        }
+                        if ($lastChoice == parent::rockChoice()){
+                            return parent::paperChoice();
+                        }
+                    }
+                }
 
 
 
