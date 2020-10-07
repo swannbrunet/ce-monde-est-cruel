@@ -88,7 +88,7 @@ class SarrishPlayer extends Player
                 for ($i = 1; $i <= 10; $i++) {
                     if ($round > 4 + $i) {
                         if ($stat[$round - 1] == $myStat[$round - (1 + $i)] && $stat[$round - 2] == $myStat[$round - (2 + $i)] && $stat[$round - 3] == $myStat[$round - (3 + $i)]) {
-                            $lastChoice = $this->result->getLastChoiceFor($this->mySide);
+                            $lastChoice = $myStat[$round -  $i];
                             if ($lastChoice == parent::paperChoice()) {
                                 return parent::scissorsChoice();
                             }
