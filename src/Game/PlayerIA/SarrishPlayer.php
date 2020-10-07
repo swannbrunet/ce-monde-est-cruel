@@ -15,7 +15,8 @@ class SarrishPlayer extends Player
     protected $opponentSide;
     protected $result;
 
-    private function calculeMyStat($underound) {
+    private function calculeMyStat($underound)
+    {
         $myStat = $this->result->getChoicesFor($this->mySide);
         for ($i = 1; $i <= $underound; $i++) {
             array_pop($myStat);
@@ -85,6 +86,7 @@ class SarrishPlayer extends Player
                 $paper = 0;
                 $rock = 0;
                 $scissors = 0;
+                //Verifie si l'utilisateur a une grosse prédominance 
                 foreach ($stat as &$value) {
                     if ($value == parent::rockChoice()) {
                         $rock += 1;
@@ -127,45 +129,46 @@ class SarrishPlayer extends Player
 
                 //Verifie si l'utilisateur utilise un system de state
                 $success = true;
-                for ($i = 1; $i <= 4; $i++) {
-                    $test = false;
-                    $res = $this->calculeMyStat($i);
-                    if ($res[0] > ($res[1] + $res[2]) / 2) {
-                        $test = $stat[$round - $i] == parent::paperChoice();
+                if ($round > 3) {
+                    for ($i = 1; $i <= 3; $i++) {
+                        $test = false;
+                        $res = $this->calculeMyStat($i);
+                        if ($res[0] > ($res[1] + $res[2]) / 2) {
+                            $test = $stat[$round - $i] == parent::paperChoice();
+                        }
+                        if ($res[1] > ($res[0] + $res[2]) / 2) {
+                            $test = $stat[$round - $i] == parent::scissorsChoice();
+                        }
+                        if ($res[2] > ($res[1] + $res[0]) / 2) {
+                            $test = $stat[$round - $i] == parent::rockChoice();
+                        }
+                        $success = $success && $test;
                     }
-                    if ($res[1] > ($res[0] + $res[2]) / 2) {
-                        $test = $stat[$round - $i] == parent::scissorsChoice();
+                    if ($success) {
+                        $res = $this->calculeMyStat(0);
+                        if ($res[0] > ($res[1] + $res[2]) / 2) {
+                            return parent::paperChoice();
+                        }
+                        if ($res[1] > ($res[0] + $res[2]) / 2) {
+                            return parent::scissorsChoice();
+                        }
+                        if ($res[2] > ($res[1] + $res[0]) / 2) {
+                            return parent::rockChoice();
+                        }
                     }
-                    if ($res[2] > ($res[1] + $res[0]) / 2) {
-                        $test = $stat[$round - $i] == parent::rockChoice();
-                    }
-                    $success = $success && $test;
                 }
-                if ($success) {
-                    $res = $this->calculeMyStat(0);
-                    if ($res[0] > ($res[1] + $res[2]) / 2) {
-                        return parent::paperChoice();
-                    }
-                    if ($res[1] > ($res[0] + $res[2]) / 2) {
-                        return parent::scissorsChoice();
-                    }
-                    if ($res[2] > ($res[1] + $res[0]) / 2) {
-                        return parent::rockChoice();
-                    }
-                }
-
 
 
                 /* LAST CHOICE ONLY FOR END */
                 $lastChoice = $this->result->getLastChoiceFor($this->opponentSide);
                 if ($lastChoice == parent::paperChoice()) {
-                    return parent::scissorsChoice();
-                }
-                if ($lastChoice == parent::scissorsChoice()) {
                     return parent::rockChoice();
                 }
-                if ($lastChoice == parent::rockChoice()) {
+                if ($lastChoice == parent::scissorsChoice()) {
                     return parent::paperChoice();
+                }
+                if ($lastChoice == parent::rockChoice()) {
+                    return parent::scissorsChoice();
                 }
             }
             return parent::paperChoice();
