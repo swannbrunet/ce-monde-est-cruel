@@ -15,6 +15,28 @@ class SarrishPlayer extends Player
     protected $opponentSide;
     protected $result;
 
+    private function calculeMyStat($underound) {
+        $myStat = $this->result->getChoicesFor($this->mySide);
+        for ($i = 1; $i <= $underound; $i++) {
+            array_pop($myStat);
+        }
+        $paper = 0;
+        $rock = 0;
+        $scissors = 0;
+        foreach ($myStat as &$value) {
+            if ($value == parent::rockChoice()) {
+                $rock += 1;
+            }
+            if ($value == parent::paperChoice()) {
+                $paper += 1;
+            }
+            if ($value == parent::scissorsChoice()) {
+                $scissors += 1;
+            }
+        }
+        return [$rock, $paper, $scissors];
+    }
+
     public function getChoice()
     {
 
@@ -85,6 +107,7 @@ class SarrishPlayer extends Player
                 }
                 $round = $this->result->getNbRound();
 
+                //Test if oponent use my last choice
                 for ($i = 1; $i <= 10; $i++) {
                     if ($round > 4 + $i) {
                         if ($stat[$round - 1] == $myStat[$round - (1 + $i)] && $stat[$round - 2] == $myStat[$round - (2 + $i)] && $stat[$round - 3] == $myStat[$round - (3 + $i)]) {
@@ -102,7 +125,34 @@ class SarrishPlayer extends Player
                     }
                 }
 
-
+                //Verifie si l'utilisateur utilise un system de state
+                $success = true;
+                for ($i = 1; $i <= 4; $i++) {
+                    $test = false;
+                    $res = $this->calculeMyStat($i);
+                    if ($res[0] > ($res[1] + $res[2]) / 2) {
+                        $test = $stat[$round - $i] == parent::paperChoice();
+                    }
+                    if ($res[1] > ($res[0] + $res[2]) / 2) {
+                        $test = $stat[$round - $i] == parent::scissorsChoice();
+                    }
+                    if ($res[2] > ($res[1] + $res[0]) / 2) {
+                        $test = $stat[$round - $i] == parent::rockChoice();
+                    }
+                    $success = $success && $test;
+                }
+                if ($success) {
+                    $res = $this->calculeMyStat(0);
+                    if ($res[0] > ($res[1] + $res[2]) / 2) {
+                        return parent::paperChoice();
+                    }
+                    if ($res[1] > ($res[0] + $res[2]) / 2) {
+                        return parent::scissorsChoice();
+                    }
+                    if ($res[2] > ($res[1] + $res[0]) / 2) {
+                        return parent::rockChoice();
+                    }
+                }
 
 
 
