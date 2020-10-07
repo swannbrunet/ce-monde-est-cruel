@@ -42,9 +42,48 @@ class SarrishPlayer extends Player
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
 
-        
-
-        return parent::paperChoice();
-
+        if ($this->result->getNbRound() == 0) {
+            return parent::paperChoice();
+        } else {
+            if ($this->result->getNbRound() == 1) {
+                if ($this->result->getLastScoreFor($this->opponentSide) == parent::paperChoice()) {
+                    return parent::scissorsChoice();
+                } else {
+                    if($this->result->getLastScoreFor($this->opponentSide) == parent::scissorsChoice()){
+                        return parent::rockChoice();
+                } else {
+                    if ($this->result->getLastScoreFor($this->opponentSide) == parent::rockChoice()){
+                        return parent::paperChoice();
+                    }
+                }
+                }
+            } else {
+                $stat = $this->result->getChoicesFor($this->opponentSide);
+                $paper = 0;
+                $rock = 0;
+                $scissors = 0;
+                foreach ($stat as &$value) {
+                    if ($value == parent::rockChoice()){
+                        $rock += 1;
+                    } 
+                    if ($value == parent::paperChoice()){
+                        $paper += 1;
+                    }
+                    if ($value == parent::scissorsChoice()){
+                        $scissors += 1;
+                    }
+                 }
+                if ($paper > $rock + $scissors) {
+                    return parent::scissorsChoice();
+                }
+                if ($scissors > $rock + $paper) {
+                    return parent::rockChoice();
+                }
+                if ($rock > $paper + $scissors) {
+                    return parent::paperChoice();
+                }
+            }
+            return parent::paperChoice();
+        }
     }
 };
