@@ -7,7 +7,7 @@ use Hackathon\Game\Result;
 /**
  * Class SarrishPlayers
  * @package Hackathon\PlayerIA
- * @author YOUR NAME HERE
+ * @author SWANN BRUNET
  */
 class SarrishPlayer extends Player
 {
@@ -17,6 +17,7 @@ class SarrishPlayer extends Player
 
     public function getChoice()
     {
+
         // -------------------------------------    -----------------------------------------------------
         // How to get my Last Choice           ?    $this->result->getLastChoiceFor($this->mySide) -- if 0 (first round)
         // How to get the opponent Last Choice ?    $this->result->getLastChoiceFor($this->opponentSide) -- if 0 (first round)
@@ -25,7 +26,7 @@ class SarrishPlayer extends Player
         // How to get the opponent Last Score  ?    $this->result->getLastScoreFor($this->opponentSide) -- if 0 (first round)
         // -------------------------------------    -----------------------------------------------------
         // How to get all the Choices          ?    $this->result->getChoicesFor($this->mySide)
-        // How to get the opponent Last Choice ?    $this->result->getChoicesFor($this->opponentSide)
+        // How to get the opponent all Choice ?    $this->result->getChoicesFor($this->opponentSide)
         // -------------------------------------    -----------------------------------------------------
         // How to get my Last Score            ?    $this->result->getLastScoreFor($this->mySide)
         // How to get the opponent Last Score  ?    $this->result->getLastScoreFor($this->opponentSide)
@@ -41,8 +42,9 @@ class SarrishPlayer extends Player
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
 
+        
 
-        return parent::rockChoice();
+        return parent::paperChoice();
 
     }
 };
