@@ -82,6 +82,21 @@ class SarrishPlayer extends Player
                 if ($rock > $paper + $scissors) {
                     return parent::paperChoice();
                 }
+
+
+
+
+                /* LAST CHOICE ONLY FOR END */
+                $lastChoice = $this->result->getLastChoiceFor($this->opponentSide);
+                if ($lastChoice == parent::paperChoice()){
+                    return parent::scissorsChoice();
+                }
+                if ($lastChoice == parent::scissorsChoice()){
+                    return parent::rockChoice();
+                }
+                if ($lastChoice == parent::rockChoice()){
+                    return parent::paperChoice();
+                }
             }
             return parent::paperChoice();
         }
